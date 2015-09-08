@@ -1,4 +1,18 @@
 #!/bin/bash
+# Copyright 2015 Actian Corporation
+ 
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+ 
+#      http://www.apache.org/licenses/LICENSE-2.0
+ 
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
+
 # Script to create a DBT3 test database then create the tables, with reasonable default partitions.
 # Then we load the data from the previously generated data files.
 # Assumes that this script is executed after the DBT3 data gen script, and that the files are in
