@@ -132,14 +132,14 @@ EOF
 
 echo "Loading base tables with generated data"
 
-vwload -z –m –t customer –f “|” –uactian $DBT3_DB /tmp/customer.tbl
-vwload -z –m –t lineitem –f “|” –uactian $DBT3_DB /tmp/lineitem.tbl
-vwload -z –m –t nation –f “|” –uactian $DBT3_DB /tmp/nation.tbl
-vwload -z –m –t orders –f “|” –uactian $DBT3_DB /tmp/orders.tbl
-vwload -z –m –t partsupp –f “|” –uactian $DBT3_DB /tmp/partsupp.tbl
-vwload -z –m –t part –f “|” –uactian $DBT3_DB /tmp/part.tbl
-vwload -z –m –t region –f “|” –uactian $DBT3_DB /tmp/region.tbl
-vwload -z –m –t supplier –f “|” –uactian $DBT3_DB /tmp/supplier.tbl
+vwload -z –m –t customer –f "|" –uactian $DBT3_DB /tmp/customer.tbl
+vwload -z –m –t lineitem –f "|" –uactian $DBT3_DB /tmp/lineitem.tbl
+vwload -z –m –t nation –f "|" –uactian $DBT3_DB /tmp/nation.tbl
+vwload -z –m –t orders –f "|" –uactian $DBT3_DB /tmp/orders.tbl
+vwload -z –m –t partsupp –f "|" –uactian $DBT3_DB /tmp/partsupp.tbl
+vwload -z –m –t part –f "|" –uactian $DBT3_DB /tmp/part.tbl
+vwload -z –m –t region –f "|" –uactian $DBT3_DB /tmp/region.tbl
+vwload -z –m –t supplier –f "|" –uactian $DBT3_DB /tmp/supplier.tbl
 
 echo "Now created sorted and indexed versions of the original tables, to show the performance differences of the two approaches"
 

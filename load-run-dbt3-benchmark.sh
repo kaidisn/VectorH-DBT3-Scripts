@@ -25,7 +25,9 @@
 
 # Make sure that our environment is set correctly
 if [ -z $II_SYSTEM ]; then
-	. ingVH
+	echo "$II_SYSTEM is missing. This means that your environment is not set to allow Vector processes to run."
+	echo "Please initialise it first (typically by running something like '. .ingVHsh') and then run this script again."
+	exit
 fi
 
 DBT3_DB=dbt3_db
@@ -50,7 +52,7 @@ RUNALL="`pwd`/VectorTools-master/runall.sh"
 # We will run them with 10 concurrent users a total of 100 times, so that's an average of 12 times per query
 # and then time the results. Output files are placed in /tmp.
 
-rm /tmp/runall* >/dev/null
+rm /tmp/runall* >/dev/null 2>&1
 echo "Beginning execution of tests now. 10 concurrent users, and 100 queries in total across all users."
 /usr/bin/time -f "%E" $RUNALL -d $DBT3_DB -g N -i $II_SYSTEM -k Y -m 10 -n 100 -p N -s .
 

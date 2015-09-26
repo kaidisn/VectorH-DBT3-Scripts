@@ -34,10 +34,10 @@ fi
 wget -nc http://sourceforge.net/projects/osdldbt/files/dbt3/1.9/dbt3-1.9.tar.gz/download
 tar xzvf download
 cd dbt3-1.9/src/dbgen
-make >/dev/null
+make >/dev/null 2>&1
 
 if [ -z dbgen ]; then
 	echo "Failed to compile data generation tool. Please check that you have a C compiler available on this system."
 fi
 
-sh dbgen ${DATA_VOLUME}
+./dbgen ${DATA_VOLUME}
