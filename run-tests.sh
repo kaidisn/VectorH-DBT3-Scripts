@@ -20,6 +20,7 @@ CONCURRENT_USERS=5
 TOTAL_QUERIES=100
 
 RUNALL="sh `pwd`/VectorTools-master/runall.sh"
+DBT3_DB=dbt3_db
 
 # The query files are in the same folder as this, so just run them now from here.
 # We will run them with 10 concurrent users a total of 100 times, so that's an average of 12 times per query
