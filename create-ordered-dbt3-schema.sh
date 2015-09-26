@@ -132,16 +132,17 @@ EOF
 
 echo "Loading base tables with generated data"
 
-vwload -z –m –t customer –f "|" –uactian $DBT3_DB /tmp/customer.tbl
-vwload -z –m –t lineitem –f "|" –uactian $DBT3_DB /tmp/lineitem.tbl
-vwload -z –m –t nation –f "|" –uactian $DBT3_DB /tmp/nation.tbl
-vwload -z –m –t orders –f "|" –uactian $DBT3_DB /tmp/orders.tbl
-vwload -z –m –t partsupp –f "|" –uactian $DBT3_DB /tmp/partsupp.tbl
-vwload -z –m –t part –f "|" –uactian $DBT3_DB /tmp/part.tbl
-vwload -z –m –t region –f "|" –uactian $DBT3_DB /tmp/region.tbl
-vwload -z –m –t supplier –f "|" –uactian $DBT3_DB /tmp/supplier.tbl
+vwload -z -m -t customer -uactian $DBT3_DB /tmp/customer.tbl*
+vwload -z -m -t lineitem -uactian $DBT3_DB /tmp/lineitem.tbl*
+vwload -z -m -t nation -uactian $DBT3_DB /tmp/nation.tbl*
+vwload -z -m -t orders -uactian $DBT3_DB /tmp/orders.tbl*
+vwload -z -m -t partsupp -uactian $DBT3_DB /tmp/partsupp.tbl*
+vwload -z -m -t part -uactian $DBT3_DB /tmp/part.tbl*
+vwload -z -m -t region -uactian $DBT3_DB /tmp/region.tbl*
+vwload -z -m -t supplier -uactian $DBT3_DB /tmp/supplier.tbl*
 
-echo "Now created sorted and indexed versions of the original tables, to show the performance differences of the two approaches"
+echo Now creating sorted version of this data, to improve performance.
+echo Starting at `date`
 
 sql $DBT3_DB<<EOF
 create table customer2 as
@@ -151,6 +152,8 @@ select *
 order by
 c_custkey;
 alter table customer2 add primary key(c_custkey);
+drop table customer;
+commit;
 
 create table lineitem2 as
 select *
@@ -159,6 +162,8 @@ select *
 order by
  l_orderkey
 with partition = (hash on l_orderkey $PARTITIONS partitions);
+drop table lineitem;
+commit;
 
 create table nation2 as
 select *
@@ -167,6 +172,8 @@ select *
 order by
 n_nationkey;
 alter table nation2 add primary key(n_nationkey);
+drop table nation;
+commit;
 
 create table orders2 as
 select *
@@ -176,6 +183,8 @@ order by
  o_orderdate
 with partition = (hash on o_orderkey $PARTITIONS partitions);
 alter table orders2 add primary key(o_orderkey);
+drop table orders;
+commit;
 
 create table partsupp2 as
 select *
@@ -185,6 +194,8 @@ order by
  ps_partkey
 with partition = (hash on ps_partkey, ps_suppkey $PARTITIONS partitions);
 alter table partsupp2 add primary key(ps_partkey, ps_suppkey);
+drop table partsupp;
+commit;
 
 create table part2 as
 select *
@@ -193,6 +204,8 @@ select *
 order by
  p_partkey;
 alter table part2 add primary key(p_partkey);
+drop table part;
+commit;
 
 create table region2 as
 select *
@@ -201,6 +214,8 @@ select *
 order by
  r_regionkey;
 alter table region2 add primary key(r_regionkey);
+drop table region;
+commit;
 
 create table supplier2 as
 select *
@@ -209,8 +224,11 @@ select *
 order by
 s_suppkey;
 alter table supplier2 add primary key(s_suppkey);
+drop table supplier;
+
+commit;
 
 \p\g
 EOF
 
-echo "Database and tables all created and data loaded."
+echo Database and tables all created and data loaded at `date`.

@@ -1,3 +1,4 @@
+#!/bin/awk
 BEGIN {
     min_query_time = 9999;
     max_query_time = 0;
