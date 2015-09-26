@@ -51,15 +51,20 @@ if [ $SPACE_AVAILABLE -lt $SPACE_NEEDED ]; then
 	exit 1
 fi
 
-echo \n \n Generated test data will be created now. You are about to create a lot of data within this file system.
-echo "${SPACE_NEEDED}Gb of data will be created next in this directory. Are you sure you want to proceed (y/n) ?"
+# Commented out asking the user about space as we now have an automatic check.
 
-response=""
-read response
-if [ $response -eq "n" || $response -eq "N" ] ; then
-	echo "Exiting. Please re-run ./dbgen -C 4 $DATA_VOLUME to re-generate the data."
-	exit 1
-fi
+# echo Generated test data will be created now. You are about to create a lot of data within this file system.
+# echo "${SPACE_NEEDED}Gb of data will be created next in this directory. Are you sure you want to proceed (y/n) ?"
+
+# read response
+# if [ -z $response ] ; then 
+# 	response=y
+# fi
+
+# if [ $response = "n" ] || [ $response = "N" ] ; then
+# 	echo "Exiting. Please re-run ./dbgen -C 4 $DATA_VOLUME to re-generate the data."
+# 	exit 1
+# fi
 
 echo "Generating test data now. This will take some time."
 echo Starting at `date`

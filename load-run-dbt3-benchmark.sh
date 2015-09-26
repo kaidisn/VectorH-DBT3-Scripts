@@ -46,19 +46,8 @@ echo Making sure we can unzip Tools package
 sudo yum install -y unzip wget >/dev/null
 wget -nc https://github.com/ActianCorp/VectorTools/archive/master.zip
 unzip master.zip
-RUNALL="sh `pwd`/VectorTools-master/runall.sh"
 
-# The query files are in the same folder as this, so just run them now from here.
-# We will run them with 10 concurrent users a total of 100 times, so that's an average of 12 times per query
-# and then time the results. Output files are placed in /tmp.
+# Defer to separate script for test execution, to make it easier to re-run the tests again
+# without getting tangled in one-off setup tasks.
 
-rm /tmp/runall* >/dev/null 2>&1
-echo "Beginning execution of tests now. 10 concurrent users, and 100 queries in total across all users."
-echo Date/time is now `date`
-
-/usr/bin/time -f "%E" $RUNALL -d $DBT3_DB -g N -i $II_SYSTEM -k Y -m 10 -n 100 -p N -s .
-
-echo Completed run at `date`
-
-echo "Summary of runtime output is as follows:"
-awk -f runall-stats.awk /tmp/runall*
+sh run-tests.sh

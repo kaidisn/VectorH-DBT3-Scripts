@@ -1,3 +1,4 @@
+\rt
 select first 100
          s_acctbal
         ,s_name
