@@ -24,33 +24,35 @@
 # Move to 1Tb per node for more realistic testing.
 
 # Make sure that our environment is set correctly
-if [-z $II_SYSTEM ]; then
+if [ -z $II_SYSTEM ]; then
 	. ingVH
 fi
 
 DBT3_DB=dbt3_db
 
 NODES=`cat $II_SYSTEM/ingres/files/hdfs/slaves|wc -l`
-DATA-VOLUME-PER-NODE=100
-TOTAL-VOLUME=`expr $DATA-VOLUME-PER-NODE "*" $NODES`
-./dbt3-install.sh $TOTAL-VOLUME
+DATA_VOLUME_PER_NODE=100
+TOTAL_VOLUME=`expr $DATA_VOLUME_PER_NODE "*" $NODES`
+sh dbt3-install.sh $TOTAL_VOLUME
 
 # Create database and load tables with generated data
-./create-ordered-dbt3-schema.sh 
+sh create-ordered-dbt3-schema.sh 
 
 # Now we want to run the queries to test the output. Need the 'runall' script for this, so we have to go and get that
 # from Github, as part of the VectorTools package.
-sudo yum install -y unzip wget
-wget https://github.com/ActianCorp/VectorTools/archive/master.zip
-RUNALL=`pwd`/VectorTools-master/runall.sh`
+echo Making sure we can unzip Tools package
+sudo yum install -y unzip wget >/dev/null
+wget -nc https://github.com/ActianCorp/VectorTools/archive/master.zip
+unzip master.zip
+RUNALL="`pwd`/VectorTools-master/runall.sh"
 
-# The query files are in the same folder as this, so just run them now from her.e
+# The query files are in the same folder as this, so just run them now from here.
 # We will run them with 10 concurrent users a total of 100 times, so that's an average of 12 times per query
 # and then time the results. Output files are placed in /tmp.
 
-rm /tmp/runall*
+rm /tmp/runall* >/dev/null
 echo "Beginning execution of tests now. 10 concurrent users, and 100 queries in total across all users."
-time -f "%E" $RUNALL -d $DBT3_DB -g N -i $II_SYSTEM -k Y -m 10 -n 100 -p N -s .
+/usr/bin/time -f "%E" $RUNALL -d $DBT3_DB -g N -i $II_SYSTEM -k Y -m 10 -n 100 -p N -s .
 
 echo "Summary of runtime output is as follows:"
-awk -f stats.awk /tmp/runall*
+awk -f runall-stats.awk /tmp/runall*

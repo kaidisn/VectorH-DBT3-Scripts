@@ -26,13 +26,18 @@
 # Be aware that the dbgen program generates all its data into /tmp - which might not be
 # large enough on Hadoop systems for really large data sets.
 
-DATA-VOLUME=""
+DATA_VOLUME=""
 if [ $# -eq 1 ] ; 	then
-	DATA-VOLUME="-s $1"
+	DATA_VOLUME="-s $1"
 fi
 
-wget http://sourceforge.net/projects/osdldbt/files/dbt3/1.9/dbt3-1.9.tar.gz/download
-tar xzvf dbt3-1.9.tar.gz
+wget -nc http://sourceforge.net/projects/osdldbt/files/dbt3/1.9/dbt3-1.9.tar.gz/download
+tar xzvf download
 cd dbt3-1.9/src/dbgen
-make
-./dbgen ${DATA-VOLUME}
+make >/dev/null
+
+if [ -z dbgen ]; then
+	echo "Failed to compile data generation tool. Please check that you have a C compiler available on this system."
+fi
+
+sh dbgen ${DATA_VOLUME}
