@@ -131,15 +131,17 @@ EOF
 # Include -z flag to auto-generate statistics as the data is loaded.
 
 echo "Loading base tables with generated data"
+# No point in adding stats to the load process, since we are really running the queries
+# against the second version of the tables, once the data has been sorted.
 
-vwload -z -m -t customer -uactian $DBT3_DB /tmp/customer.tbl*
-vwload -z -m -t lineitem -uactian $DBT3_DB /tmp/lineitem.tbl*
-vwload -z -m -t nation -uactian $DBT3_DB /tmp/nation.tbl*
-vwload -z -m -t orders -uactian $DBT3_DB /tmp/orders.tbl*
-vwload -z -m -t partsupp -uactian $DBT3_DB /tmp/partsupp.tbl*
-vwload -z -m -t part -uactian $DBT3_DB /tmp/part.tbl*
-vwload -z -m -t region -uactian $DBT3_DB /tmp/region.tbl*
-vwload -z -m -t supplier -uactian $DBT3_DB /tmp/supplier.tbl*
+vwload -m -t customer -uactian $DBT3_DB /tmp/customer.tbl*
+vwload -m -t lineitem -uactian $DBT3_DB /tmp/lineitem.tbl*
+vwload -m -t nation -uactian $DBT3_DB /tmp/nation.tbl*
+vwload -m -t orders -uactian $DBT3_DB /tmp/orders.tbl*
+vwload -m -t partsupp -uactian $DBT3_DB /tmp/partsupp.tbl*
+vwload -m -t part -uactian $DBT3_DB /tmp/part.tbl*
+vwload -m -t region -uactian $DBT3_DB /tmp/region.tbl*
+vwload -m -t supplier -uactian $DBT3_DB /tmp/supplier.tbl*
 
 echo Now creating sorted version of this data, to improve performance.
 echo Starting at `date`
@@ -232,3 +234,10 @@ commit;
 EOF
 
 echo Database and tables all created and data loaded at `date`.
+
+# Now gather statistics on the tables
+# Just gather stats on all tables and columns by default.
+
+echo Now gathering statistics on the data distribution
+
+optimizedb $DBT3_DB
