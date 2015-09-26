@@ -19,9 +19,20 @@
 # To create more, just run:
 # ./dbgen -s 10
 # to create a set of 10gb data files - and increase the number for more.
+# Script now can take a parameter to determine what volume of data to generate
+# Should typically be based on the number of nodes in the cluster, but we leave
+# that decision to the caller.
+
+# Be aware that the dbgen program generates all its data into /tmp - which might not be
+# large enough on Hadoop systems for really large data sets.
+
+DATA-VOLUME=""
+if [ $# -eq 1 ] ; 	then
+	DATA-VOLUME="-s $1"
+fi
 
 wget http://sourceforge.net/projects/osdldbt/files/dbt3/1.9/dbt3-1.9.tar.gz/download
 tar xzvf dbt3-1.9.tar.gz
 cd dbt3-1.9/src/dbgen
 make
-./dbgen
+./dbgen ${DATA-VOLUME}
