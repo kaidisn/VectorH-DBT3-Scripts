@@ -13,6 +13,11 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+# This performs some simple statistical analysis of the results of a set of query tests executed by 
+# the 'runall' script, which by default places all of its log files in /tmp.
+
+# To execute, execute via: `awk -f runall-stats.awk /tmp/run*log`
+
 
 BEGIN {
     min_query_time = 9999;
@@ -54,7 +59,7 @@ END {
     while (i < num_results);
 
     # Print out the total run time to a file for summary
-    # Baseline runtime on bare-metal cluster is abour 45 seconds for a 5-user test, so calculate this result relative to that.
+    # Baseline runtime on bare-metal cluster is about 45 seconds for a 5-user test, so calculate this result relative to that.
     relative_result=(total_query_time/45)*100;
     printf "%d%", relative_result > "run_performance.out";
 }
