@@ -134,6 +134,9 @@ echo "Loading base tables with generated data"
 # No point in adding stats to the load process, since we are really running the queries
 # against the second version of the tables, once the data has been sorted.
 
+# Assumes all intermediate files are on the local filesystem, hence doesn't use the cluster 
+# option for vwload (since that requires files in HDFS to work with).
+
 vwload -m -t customer -uactian $DBT3_DB /tmp/customer.tbl*
 vwload -m -t lineitem -uactian $DBT3_DB /tmp/lineitem.tbl*
 vwload -m -t nation -uactian $DBT3_DB /tmp/nation.tbl*

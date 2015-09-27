@@ -32,16 +32,21 @@ fi
 
 DBT3_DB=dbt3_db
 
-NODES=`cat $II_SYSTEM/ingres/files/hdfs/slaves|wc -l`
+# Default to one node, in a start to make this mechanism work for Vector as well as Vector-H
+NODES=`cat $II_SYSTEM/ingres/files/hdfs/slaves|wc -l 2>/dev/null`
+if [ -z $NODES ]; then
+	NODES=1
+fi
 
 # change the following number to adjust the data volume being tested. 100 = 100Gb of data per node.
 # All of your temp data needs to live on a local disk before it gets loaded, so bear that in mind.
-DATA_VOLUME_PER_NODE=100
+DATA_VOLUME_PER_NODE=1
 TOTAL_VOLUME=`expr $DATA_VOLUME_PER_NODE "*" $NODES`
 sh dbt3-install.sh $TOTAL_VOLUME
 
 # Create database and load tables with generated data
-sh create-ordered-dbt3-schema.sh 
+chmod +x create-ordered-dbt3-schema.sh
+./create-ordered-dbt3-schema.sh 
 
 # Now we want to run the queries to test the output. Need the 'runall' script for this, so we have to go and get that
 # from Github, as part of the VectorTools package.
@@ -56,7 +61,8 @@ unzip master.zip
 chmod +x run-tests.sh
 ./run-tests.sh | tee run-$(date).log
 
-echo By way of comparison, this benchmark with 5 concurrent users and 100 queries completes in around 45 seconds
-echo on a 6 data-node, bare-metal cluster with 16 cores per node.
+echo By way of comparison, this benchmark with 1Gb of data per node, 5 concurrent users and 100 queries
+echo completes in around 45 seconds on a 6 data-node, bare-metal cluster with 16 cores per node and 
+echo 256Gb RAM on each node.
 
 echo Your results are `cat run_performance.out` of this baseline.

@@ -20,7 +20,12 @@
 # September 7th 2015
 # D. Postle
 
-NODES=`cat $II_SYSTEM/ingres/files/hdfs/slaves|wc -l`
+# Default number of nodes to 1, in case this is running with single-node Vector, not Vector-H
+NODES=`cat $II_SYSTEM/ingres/files/hdfs/slaves|wc -l >/dev/null`
+if [ -z $NODES ]; then
+	NODES=1
+fi
+
 CORES=`cat /proc/cpuinfo|grep 'cpu cores'|sort|uniq|cut -d: -f 2`
 CPUS=`cat /proc/cpuinfo|grep 'physical id'|sort|uniq|wc -l`
 echo `expr $CORES "*" $CPUS "*" $NODES "/" 2`
