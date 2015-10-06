@@ -28,12 +28,12 @@ fi
 
 CORES=`cat /proc/cpuinfo|grep 'cpu cores'|sort|uniq|cut -d: -f 2`
 CPUS=`cat /proc/cpuinfo|grep 'physical id'|sort|uniq|wc -l`
-PARTTIONS=`expr $CORES "*" $CPUS "*" $NODES "/" 2`
+PARTITIONS=`expr $CORES "*" $CPUS "*" $NODES "/" 2`
 
 # Default partitions to 2 where calc yields 0 or 1 
-if [ -z $PARTITIONS ] || [ $PARTITIONS -eq 1 ]
-then
+if [ "$PARTITIONS" -lt "2" ]; then
     PARTITIONS=2
 fi
 
-echo $PARTTIONS
+echo $PARTITIONS
+
