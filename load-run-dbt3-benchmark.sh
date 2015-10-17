@@ -51,7 +51,7 @@ chmod +x create-ordered-dbt3-schema.sh
 
 # Now we want to run the queries to test the output. Need the 'runall' script for this, so we have to go and get that
 # from Github, as part of the VectorTools package.
-git clone https://github.com/ActianCorp/VectorTools
+git clone -q https://github.com/ActianCorp/VectorTools
 
 # Defer to separate script for test execution, to make it easier to re-run the tests again
 # without getting tangled in one-off setup tasks.
