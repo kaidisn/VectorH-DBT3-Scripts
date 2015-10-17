@@ -19,7 +19,7 @@
 CONCURRENT_USERS=5
 TOTAL_QUERIES=100
 
-RUNALL="sh `pwd`/VectorTools-master/runall.sh"
+RUNALL="sh `pwd`/VectorTools/runall.sh"
 DBT3_DB=dbt3_db
 
 # The query files are in the same folder as this, so just run them now from here.
