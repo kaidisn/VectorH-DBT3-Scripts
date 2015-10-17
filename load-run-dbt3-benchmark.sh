@@ -35,7 +35,7 @@ DBT3_DB=dbt3_db
 
 # Default to one node, in a start to make this mechanism work for Vector as well as Vector-H
 NODES=`cat $II_SYSTEM/ingres/files/hdfs/slaves|wc -l 2>/dev/null`
-if [ -z $NODES ]; then
+if [ -z $NODES -o $NODES -eq 0 ]; then
 	NODES=1
 fi
 
