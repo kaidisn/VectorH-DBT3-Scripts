@@ -45,4 +45,4 @@ echo By way of comparison, this test using Vector-H 4.2.1 with 1Gb of data per n
 echo queries completes in around 45 seconds on a 6 data-node, bare-metal cluster with 16 cores per node and 
 echo 256Gb RAM on each node.
 
-echo This run completed in `cat run_performance.out` of this time (less than 100% is faster).
+echo This run completed in `cat run_performance.out` of this time, where less than 100% is faster.
