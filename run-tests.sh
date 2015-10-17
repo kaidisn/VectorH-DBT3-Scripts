@@ -40,3 +40,9 @@ echo "Summary of runtime output is as follows:"
 # the timing info in the log files for us to analyse.
 
 awk -f runall-stats.awk /tmp/runall*log
+
+echo By way of comparison, this test using Vector-H 4.2.1 with 1Gb of data per node, 5 concurrent users and 100 
+echo queries completes in around 45 seconds on a 6 data-node, bare-metal cluster with 16 cores per node and 
+echo 256Gb RAM on each node.
+
+echo This run completed in `cat run_performance.out` of this time (less than 100% is faster).

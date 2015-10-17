@@ -59,10 +59,4 @@ unzip master.zip
 # without getting tangled in one-off setup tasks.
 
 chmod +x run-tests.sh
-./run-tests.sh | tee run-$(date).log
-
-echo By way of comparison, this benchmark with 1Gb of data per node, 5 concurrent users and 100 queries
-echo completes in around 45 seconds on a 6 data-node, bare-metal cluster with 16 cores per node and 
-echo 256Gb RAM on each node.
-
-echo Your results are `cat run_performance.out` of this baseline.
+./run-tests.sh | tee run-$(date +%F.%T).log
