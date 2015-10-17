@@ -25,9 +25,10 @@
 
 # Make sure that our environment is set correctly
 if [ -z $II_SYSTEM ]; then
-	echo "$II_SYSTEM is missing. This means that your environment is not set to allow Vector processes to run."
-	echo "Please initialise it first (typically by running something like '. .ingVHsh') and then run this script again."
-	exit
+	echo 'Your $II_SYSTEM variable is missing. This means that your environment is not set to allow Vector '
+	echo "processes to run. Please initialise it first (typically by running something like '. .ingVHsh') "
+	echo "and then run this script again."
+	exit 1
 fi
 
 DBT3_DB=dbt3_db
