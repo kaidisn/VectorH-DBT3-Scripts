@@ -51,10 +51,7 @@ chmod +x create-ordered-dbt3-schema.sh
 
 # Now we want to run the queries to test the output. Need the 'runall' script for this, so we have to go and get that
 # from Github, as part of the VectorTools package.
-echo Making sure we can unzip Tools package
-sudo yum install -y unzip wget >/dev/null
-wget -nc https://github.com/ActianCorp/VectorTools/archive/master.zip
-unzip master.zip
+git clone https://github.com/ActianCorp/VectorTools
 
 # Defer to separate script for test execution, to make it easier to re-run the tests again
 # without getting tangled in one-off setup tasks.
