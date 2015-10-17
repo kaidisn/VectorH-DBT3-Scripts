@@ -26,7 +26,9 @@
 # Be aware that the dbgen program generates all its data into the current folder - which might not be
 # large enough on Hadoop systems for really large data sets. Warn the user of this before it's too late.
 
-DATA_VOLUME=""
+DATA_VOLUME="-s 1"
+SPACE_NEEDED=1
+
 if [ $# -eq 1 ] ; 	then
 	SPACE_NEEDED=$1
 	DATA_VOLUME="-s $1"
@@ -50,21 +52,6 @@ if [ $SPACE_AVAILABLE -lt $SPACE_NEEDED ]; then
 	echo "Please copy 'dbgen' to a file system with enough space, and then run './dbgen -C 4 $DATA_VOLUME'. "
 	exit 1
 fi
-
-# Commented out asking the user about space as we now have an automatic check.
-
-# echo Generated test data will be created now. You are about to create a lot of data within this file system.
-# echo "${SPACE_NEEDED}Gb of data will be created next in this directory. Are you sure you want to proceed (y/n) ?"
-
-# read response
-# if [ -z $response ] ; then 
-# 	response=y
-# fi
-
-# if [ $response = "n" ] || [ $response = "N" ] ; then
-# 	echo "Exiting. Please re-run ./dbgen -C 4 $DATA_VOLUME to re-generate the data."
-# 	exit 1
-# fi
 
 echo "Generating test data now. This will take some time."
 echo Starting at `date`
