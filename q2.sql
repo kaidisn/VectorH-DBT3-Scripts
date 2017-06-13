@@ -9,11 +9,11 @@ select first 100
         ,s_phone
         ,s_comment
 from
-         part2
-        ,supplier2
-        ,partsupp2
-        ,nation2
-        ,region2
+         part
+        ,supplier
+        ,partsupp
+        ,nation
+        ,region
 where
         p_partkey = ps_partkey
   and   s_suppkey = ps_suppkey
@@ -26,10 +26,10 @@ where
                 select
                          min(ps_supplycost)
                 from
-                         partsupp2
-                        ,supplier2
-                        ,nation2
-                        ,region2
+                         partsupp
+                        ,supplier
+                        ,nation
+                        ,region
                 where
                         p_partkey = ps_partkey
                   and   s_suppkey = ps_suppkey

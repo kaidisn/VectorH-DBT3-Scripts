@@ -12,14 +12,14 @@ from
                         ,l_extendedprice * (1 - l_discount) as volume
                         ,n2.n_name as nation
                 from
-                         part2
-                        ,supplier2
-                        ,lineitem2
-                        ,orders2
-                        ,customer2
-                        ,nation2 n1
-                        ,nation2 n2
-                        ,region2
+                         part
+                        ,supplier
+                        ,lineitem
+                        ,orders
+                        ,customer
+                        ,nation n1
+                        ,nation n2
+                        ,region
                 where
                         p_partkey = l_partkey
                   and   s_suppkey = l_suppkey

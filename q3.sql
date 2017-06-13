@@ -5,9 +5,9 @@ select first 10
         ,o_orderdate
         ,o_shippriority
 from
-         customer2
-        ,orders2
-        ,lineitem2
+         customer
+        ,orders
+        ,lineitem
 where
         c_mktsegment = 'BUILDING'
   and   c_custkey = o_custkey
