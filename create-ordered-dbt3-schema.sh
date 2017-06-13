@@ -1,12 +1,12 @@
 #!/bin/bash
-# Copyright 2015 Actian Corporation
- 
+# Copyright 2017 Actian Corporation
+
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
 #    You may obtain a copy of the License at
- 
+
 #      http://www.apache.org/licenses/LICENSE-2.0
- 
+
 #    Unless required by applicable law or agreed to in writing, software
 #    distributed under the License is distributed on an "AS IS" BASIS,
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -134,103 +134,44 @@ echo "Loading base tables with generated data"
 # No point in adding stats to the load process, since we are really running the queries
 # against the second version of the tables, once the data has been sorted.
 
-# Assumes all intermediate files are on the local filesystem, hence doesn't use the cluster 
+# Assumes all intermediate files are on the local filesystem, hence doesn't use the cluster
 # option for vwload (since that requires files in HDFS to work with).
 
-vwload -m -t customer -uactian $DBT3_DB /tmp/customer.tbl*
-vwload -m -t lineitem -uactian $DBT3_DB /tmp/lineitem.tbl*
-vwload -m -t nation -uactian $DBT3_DB /tmp/nation.tbl*
-vwload -m -t orders -uactian $DBT3_DB /tmp/orders.tbl*
-vwload -m -t partsupp -uactian $DBT3_DB /tmp/partsupp.tbl*
-vwload -m -t part -uactian $DBT3_DB /tmp/part.tbl*
-vwload -m -t region -uactian $DBT3_DB /tmp/region.tbl*
-vwload -m -t supplier -uactian $DBT3_DB /tmp/supplier.tbl*
+vwload -z -m -t customer -uactian $DBT3_DB /tmp/customer.tbl*
+vwload -z -m -t lineitem -uactian $DBT3_DB /tmp/lineitem.tbl*
+vwload -z -m -t nation -uactian $DBT3_DB /tmp/nation.tbl*
+vwload -z -m -t orders -uactian $DBT3_DB /tmp/orders.tbl*
+vwload -z -m -t partsupp -uactian $DBT3_DB /tmp/partsupp.tbl*
+vwload -z -m -t part -uactian $DBT3_DB /tmp/part.tbl*
+vwload -z -m -t region -uactian $DBT3_DB /tmp/region.tbl*
+vwload -z -m -t supplier -uactian $DBT3_DB /tmp/supplier.tbl*
 
 echo Now creating sorted version of this data, to improve performance.
 echo Starting at `date`
 
 sql $DBT3_DB<<EOF
-create table customer2 as
-select *
-  from
- customer
-order by
-c_custkey;
-alter table customer2 add primary key(c_custkey);
-drop table customer;
+alter table customer add primary key(c_custkey);
 commit;
 
-create table lineitem2 as
-select *
-  from
- lineitem
-order by
- l_orderkey
-with partition = (hash on l_orderkey $PARTITIONS partitions);
-drop table lineitem;
+alter table lineitem add primary key(l_orderkey);
 commit;
 
-create table nation2 as
-select *
-  from
- nation
-order by
-n_nationkey;
-alter table nation2 add primary key(n_nationkey);
-drop table nation;
+alter table nation add primary key(n_nationkey);
 commit;
 
-create table orders2 as
-select *
-  from
- orders
-order by
- o_orderdate
-with partition = (hash on o_orderkey $PARTITIONS partitions);
-alter table orders2 add primary key(o_orderkey);
-drop table orders;
+alter table orders add primary key(o_orderkey);
 commit;
 
-create table partsupp2 as
-select *
-  from
- partsupp
-order by
- ps_partkey
-with partition = (hash on ps_partkey, ps_suppkey $PARTITIONS partitions);
-alter table partsupp2 add primary key(ps_partkey, ps_suppkey);
-drop table partsupp;
+alter table partsupp add primary key(ps_partkey, ps_suppkey);
 commit;
 
-create table part2 as
-select *
-  from
- part
-order by
- p_partkey;
-alter table part2 add primary key(p_partkey);
-drop table part;
+alter table part add primary key(p_partkey);
 commit;
 
-create table region2 as
-select *
-  from
- region
-order by
- r_regionkey;
-alter table region2 add primary key(r_regionkey);
-drop table region;
+alter table region add primary key(r_regionkey);
 commit;
 
-create table supplier2 as
-select *
-  from
- supplier
-order by
-s_suppkey;
-alter table supplier2 add primary key(s_suppkey);
-drop table supplier;
-
+alter table supplier add primary key(s_suppkey);
 commit;
 
 \p\g
@@ -238,9 +179,12 @@ EOF
 
 echo Database and tables all created and data loaded at `date`.
 
+# Following section commented out as we use the -z flag to vwload to gather stats
+# at load time.
+
 # Now gather statistics on the tables
 # Just gather stats on all tables and columns by default.
 
-echo Now gathering statistics on the data distribution
+# echo Now gathering statistics on the data distribution
 
-optimizedb $DBT3_DB
+# optimizedb $DBT3_DB
