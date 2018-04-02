@@ -37,7 +37,8 @@ create table customer (
 ,c_acctbal      DECIMAL(18,2)   not null
 ,c_mktsegment   CHAR(10)        not null
 ,c_comment      VARCHAR(117)    not null
-);
+)
+with nopartition;
 
 
 create table lineitem (
@@ -65,7 +66,8 @@ create table nation (
 ,n_name         CHAR(25)        not null
 ,n_regionkey    INTEGER         not null
 ,n_comment      VARCHAR(152)    not null
-);
+)
+with nopartition;
 
 
 create table orders (
@@ -102,14 +104,16 @@ create table part (
 ,p_container    CHAR(10)        not null
 ,p_retailprice  DECIMAL(18,2)   not null
 ,p_comment      VARCHAR(23)     not null
-);
+)
+with nopartition;
 
 
 create table region (
  r_regionkey    INTEGER         not null
 ,r_name         CHAR(25)        not null
 ,r_comment      VARCHAR(152)    not null
-);
+)
+with nopartition;
 
 
 create table supplier (
@@ -120,7 +124,8 @@ create table supplier (
 ,s_phone        CHAR(15)        not null
 ,s_acctbal      DECIMAL(18,2)   not null
 ,s_comment      VARCHAR(101)    not null
-);
+)
+with nopartition;
 
 
 \p\g

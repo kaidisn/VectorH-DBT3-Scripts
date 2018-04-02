@@ -21,7 +21,7 @@
 # D. Postle
 
 # Default number of nodes to 1, in case this is running with single-node Vector, not Vector-H
-NODES=`cat $II_SYSTEM/ingres/files/hdfs/slaves|wc -l >/dev/null`
+NODES=`cat $II_SYSTEM/ingres/files/hdfs/slaves|wc -l 2>/dev/null`
 if [ -z $NODES ]; then
 	NODES=1
 fi
